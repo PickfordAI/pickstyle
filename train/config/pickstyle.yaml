@@ -1,0 +1,34 @@
+image_dataset_v1:
+  styles_list: ['anime', 'pixar', 'clay']
+  basedir: "datasets/image_dataset_v1"
+  video_resolution: [81, 480, 832]
+  version: 1
+image_dataset_v2:
+  styles_list: ['3D_Chibi', 'Clay_Toy', 'LEGO', "Macaron", "Origami", "Rick_Morty", "Vector"]
+  basedir: "datasets/image_dataset_v2"
+  video_resolution: [81, 480, 832]
+  version: 2
+
+model:
+  name: vace-14B
+  ckpt_dir: models/Wan2.1-VACE-14B
+  lora_args:
+    lora_rank: 128
+    lora_alpha: 128
+    lora_target_modules: "vace_blocks\\.\\d+\\.(?:self_attn)\\.(?:q|k|v)$"
+    init_lora_weights: 'kaiming'
+    adapter_name: "consistency"
+  use_usp: False
+  use_gradient_checkpointing: True
+  use_gradient_checkpointing_offload: True
+
+
+train:
+  mode: "image"
+  lr: 0.00056
+  epochs: 57
+  sample_interval: -1
+  save_interval: 10
+  sample_first_step: False
+  include_video_dataset: True
+  save_lora_path: train/stage3_Nostyle_consistencylora_weights-rank128
